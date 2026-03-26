@@ -1,0 +1,15 @@
+name: Daily GitHub Top 3
+on:
+  schedule:
+    - cron: '0 1 * * *'  # UTC 1点 = 北京时间 9点
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send to Feishu
+        env:
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+        run: |
+          curl -X POST "$FEISHU_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{"msg_type":"text","content":{"text":"GitHub Chinese Top 3\n\n#1 vuejs/vue\n207,797 stars | JavaScript\n\n#2 huggingface/transformers\n133,228 stars | Python\n\n#3 electron/electron\n113,902 stars | C++\n\nFull: https://github.com/GrowingGit/GitHub-Chinese-Top-Charts"}}'
